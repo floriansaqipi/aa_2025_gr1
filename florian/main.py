@@ -1,38 +1,38 @@
-import re
-
-
-def normalize_text(text):
-    return re.sub(r'[^a-z0-9 ]', '', text.lower())
 
 
 def flag_posts(blacklisted_phrases, posts):
-    normalized_blacklist = set()
-    for phrase in blacklisted_phrases:
-        normalized_phrase = normalize_text(phrase).replace(" ", "")
-        normalized_blacklist.add(normalized_phrase)
 
-    results = []
-    for idx, post in enumerate(posts, start=1):
-        normalized_post = normalize_text(post).replace(" ", "")
+    blacklist_set = set()
+    for phrase in blacklisted_phrases:
+        blacklist_set.add(phrase.lower())
+
+
+    for i in range(len(posts)):
+        post = posts[i]
+        post_lower = post.lower()
+
+
         found_phrases = []
 
-        for phrase in normalized_blacklist:
-            if phrase in normalized_post:
-                for original_phrase in blacklisted_phrases:
-                    if normalize_text(original_phrase).replace(" ", "") == phrase:
-                        found_phrases.append(original_phrase)
-                        break
+        for phrase in blacklist_set:
+            if phrase in post_lower:
+                found_phrases.append(phrase)
 
-        if found_phrases:
-            results.append(f"Post {idx}: FLAGGED - Contains: {found_phrases}")
+        if len(found_phrases) > 0:
+            print(f"Post {i + 1}: FLAGGED - Contains: {found_phrases}")
         else:
-            results.append(f"Post {idx}: CLEAN")
-
-    return results
+            print(f"Post {i + 1}: CLEAN")
 
 
-# Example usage
-blacklisted_phrases = ["hate speech", "buy followers", "click here now", "banned content", "illegal drugs"]
+
+blacklisted_phrases = [
+    "hate speech",
+    "buy followers",
+    "click here now",
+    "banned content",
+    "illegal drugs"
+]
+
 posts = [
     "Check out my new recipe for chocolate cake!",
     "CLICK HERE NOW for amazing deals!!!",
@@ -41,6 +41,5 @@ posts = [
     "This is a normal post about my day"
 ]
 
-output = flag_posts(blacklisted_phrases, posts)
-for line in output:
-    print(line)
+
+flag_posts(blacklisted_phrases, posts)
