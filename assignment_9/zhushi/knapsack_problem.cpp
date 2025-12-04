@@ -32,10 +32,6 @@ int main(){
 
 int solve_knapsack(std::vector<backpack_item> INSTANCE, int BACKPACK_CAPACITY){
 
-	// llogarite koeficientin val per wt
-	// sorto sipas qatij koeficienti
-	// edhe nisja, while theres capacity... += value; -= weight
-
 	size_t n = INSTANCE.size();
 	for (int i = 0; i < n; i++) {
 		INSTANCE[i].value_per_weight = 1.0 * INSTANCE[i].value / INSTANCE[i].weight;
